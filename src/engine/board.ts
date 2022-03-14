@@ -1,4 +1,5 @@
 import Tile, { Suit, Number } from "./tile";
+import shuffle from "./utils/shuffle";
 
 export default class Board {
   tiles: Tile[] = [];
@@ -20,5 +21,11 @@ export default class Board {
     Tile.windNumbers.forEach((number) => pushTiles(number, Suit.Wind, 4));
     Tile.dragonNumbers.forEach((number) => pushTiles(number, Suit.Dragon, 4));
     Tile.flowerNumbers.forEach((number) => pushTiles(number, Suit.Flower, 2));
+
+    this.shuffleTiles()
+  }
+
+  shuffleTiles() {
+    this.tiles = shuffle(this.tiles);
   }
 }
