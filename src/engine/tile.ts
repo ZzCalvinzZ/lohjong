@@ -38,4 +38,60 @@ export default class Tile {
     this.number = number;
     this.suit = suit;
   }
+
+  get tileCells() {
+    if (this.x === undefined || this.y === undefined || this.z === undefined) {
+      throw new Error("Tiles need to be placed before you can get their cells");
+    }
+
+    return [
+      {
+        z: this.z,
+        x: this.x,
+        y: this.y,
+      },
+      {
+        z: this.z,
+        x: this.x + 1,
+        y: this.y,
+      },
+      {
+        z: this.z,
+        x: this.x,
+        y: this.y + 1,
+      },
+      {
+        z: this.z,
+        x: this.x + 1,
+        y: this.y + 1,
+      },
+    ];
+  }
+
+  get graphKey() {
+    return `${this.suit}_${this.number}_${this.x}_${this.y}_${this.z}`;
+  }
+
+  tileIsAdjacent(tile: Tile) {
+    const t1Cells = this.tileCells;
+    const t2Cells = tile.tileCells;
+
+    let isAdjacent = false;
+
+    t1Cells.forEach((t1) => {
+      t2Cells.forEach((t2) => {
+        // tile is above or below
+        if ((t1.z === t2.z - 1 || t1.z === t2.z + 1) && t1.x === t2.x && t1.y === t2.y) {
+          isAdjacent = true;
+        }
+
+        // tile is to the left or the right
+        if (t1.z === t2.z && t1.y === t2.y && (t1.x === t2.x - 1 || t1.x === t2.x + 1)) {
+          isAdjacent = true;
+        }
+      });
+    });
+
+    return isAdjacent;
+  }
 }
