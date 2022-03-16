@@ -46,10 +46,7 @@ export default class Board {
           if (tilemap[z][y][x] === 1) {
             // place tile
             const placedTile = tiles.pop() as Tile;
-            placedTile.z = z;
-            placedTile.x = x;
-            placedTile.y = y;
-
+            placedTile.place({z, x, y})
             placedTiles.push(placedTile);
 
             const adjacentTiles = placedTiles.filter((tile) => {
@@ -61,11 +58,11 @@ export default class Board {
 
             // set adjacent tiles in the graph
             adjacentTiles.forEach((tile: Tile) => {
-              if (this.tileGraph[tile.graphKey]) {
-                this.tileGraph[tile.graphKey].push(placedTile)
+              if (this.tileGraph[tile.id]) {
+                this.tileGraph[tile.id].push(placedTile)
               }
             })
-            this.tileGraph[placedTile.graphKey] = adjacentTiles;
+            this.tileGraph[placedTile.id] = adjacentTiles;
 
             // change 1s to 0s on board to show tile is placed
             tilemap[z][y][x] = 0;

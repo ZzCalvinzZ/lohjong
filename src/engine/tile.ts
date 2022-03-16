@@ -39,6 +39,12 @@ export default class Tile {
     this.suit = suit;
   }
 
+  place({ z, x, y }: { z: number; x: number; y: number }) {
+    this.z = z
+    this.x = x
+    this.y = y
+  }
+
   get tileCells() {
     if (this.x === undefined || this.y === undefined || this.z === undefined) {
       throw new Error("Tiles need to be placed before you can get their cells");
@@ -68,7 +74,7 @@ export default class Tile {
     ];
   }
 
-  get graphKey() {
+  get id() {
     return `${this.suit}_${this.number}_${this.x}_${this.y}_${this.z}`;
   }
 
