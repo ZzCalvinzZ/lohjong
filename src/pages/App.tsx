@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Stage, Container, Sprite, Text } from "@inlet/react-pixi";
+import Tile from "components/Tile";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export const App = () => (
+  <div className="App">
+    <Stage>
+      <Sprite image="./my-image.png" x={100} y={100} />
+      <Tile x={50} y={50} width={100} height={150} color={0xfff} />
+
+      <Container x={500}>
+        <Text text="Hello World" />
+      </Container>
+    </Stage>
+  </div>
+);
 
 export default App;
