@@ -1,7 +1,20 @@
 import Board from "../board";
 import { BoardIds } from "../../boards/types";
+import shuffle from "../utils/shuffle";
+import { tileGraphFixture } from "../__fixtures__/board";
+
+jest.mock("../utils/shuffle", () => jest.fn());
 
 describe("Board", () => {
+  beforeEach(() => {
+    (shuffle as jest.Mock).mockImplementation((x: any) => [...x].reverse());
+  });
+
+  it("should have an adjacency matrix", () => {
+    const what = new Board(BoardIds.Turtle);
+    expect(what.tileGraph).toEqual(tileGraphFixture);
+  });
+
   it("should create tiles", () => {
     const board = new Board(BoardIds.Turtle);
     expect(board.tiles.length).toEqual(144);

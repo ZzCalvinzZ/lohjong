@@ -9,8 +9,8 @@ export default class Board {
   board: BoardType;
 
   constructor(boardId: BoardIds) {
-    this.createTiles();
     this.board = boards[boardId];
+    this.createTiles();
   }
 
   createTiles() {
@@ -28,6 +28,7 @@ export default class Board {
     Tile.flowerNumbers.forEach((number) => pushTiles(number, Suit.Flower, 2));
 
     this.shuffleTiles();
+    this.placeTiles();
   }
 
   shuffleTiles() {

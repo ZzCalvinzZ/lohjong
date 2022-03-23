@@ -1,4 +1,5 @@
 export default function shuffle<T>(array: T[]) {
+  console.log('blumbo2', array);
   const newArray = [...array]
   let currentIndex = array.length,  randomIndex;
 
