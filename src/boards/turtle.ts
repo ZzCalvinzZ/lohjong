@@ -96,6 +96,8 @@ const turtle4: BoardLayerType = [
 
 const turtle: BoardType = {
   id: BoardIds.Turtle,
+  tileWidth: 15,
+  tileHeight: 8,
   tiles: 144,
   tilemap: [turtle0, turtle1, turtle2, turtle3, turtle4],
 };

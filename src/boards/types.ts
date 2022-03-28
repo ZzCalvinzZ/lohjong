@@ -8,5 +8,7 @@ export type BoardLayerType = Array<Array<BoardLayoutType>>
 export type BoardType = {
   id: BoardIds
   tiles: number
+  tileWidth: number
+  tileHeight: number
   tilemap: BoardLayerType[]
 }
