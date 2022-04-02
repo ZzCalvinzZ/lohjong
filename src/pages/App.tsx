@@ -1,7 +1,9 @@
 import { useState } from "react";
+import * as PIXI from "pixi.js";
 import "./App.css";
 import { Stage, Container } from "@inlet/react-pixi";
 import Tile, { TILE_WIDTH, TILE_HEIGHT } from "components/Tile";
+import TileClass from "engine/tile";
 import Board from "engine/board";
 import { BoardIds } from "boards/types";
 
@@ -19,6 +21,12 @@ const calcYOffset = (height: number) => (STAGE_HEIGHT - height) / 2;
 
 export const App = () => {
   const [board, setBoard] = useState(initBoard);
+  const [selectedTile, setSelectedTile] = useState<TileClass | undefined>();
+
+  const onClick = (tile: TileClass) => {
+    setSelectedTile(tile);
+    console.log("hello");
+  };
 
   return (
     <div className="App">
@@ -41,6 +49,9 @@ export const App = () => {
                   y={calcYPos(tile.y, tile.z)}
                   number={tile.number}
                   suit={tile.suit}
+                  fillColor={tile.id === selectedTile?.id ? 0xf5f4ba : undefined}
+                  onClick={onClick}
+                  tile={tile}
                 />
               );
             })}

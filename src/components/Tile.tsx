@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import { PixiComponent } from "@inlet/react-pixi";
 import { Container, Text } from "@inlet/react-pixi";
+import TileClass from "engine/tile";
 
 export const TILE_WIDTH = 50;
 export const TILE_HEIGHT = 75;
@@ -32,13 +33,16 @@ type TileProps = {
   y: number;
   number: string;
   suit: string;
+  onClick: (tile: TileClass) => void;
+  fillColor?: number;
+  tile: TileClass;
 };
 
-const Tile = ({ x, y, number, suit }: TileProps) => {
+const Tile = ({ x, y, number, suit, onClick, fillColor = 0xffffff, tile }: TileProps) => {
   return (
-    <Container x={x} y={y}>
-      <Rect x={0} y={0} width={TILE_WIDTH} height={TILE_HEIGHT} fillColor={0xffffff} lineColor={0x000000} />
-      <Text text={number} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 3} style={{ fontSize: 16 }}/>
+    <Container x={x} y={y} interactive={true} pointerdown={() => onClick(tile)}>
+      <Rect x={0} y={0} width={TILE_WIDTH} height={TILE_HEIGHT} fillColor={fillColor} lineColor={0x000000} />
+      <Text text={number} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 3} style={{ fontSize: 16 }} />
       <Text text={suit} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 2} style={{ fontSize: 12 }} />
     </Container>
   );
