@@ -11,7 +11,10 @@ const STAGE_WIDTH = 1000;
 const STAGE_HEIGHT = 800;
 const Z_OFFSET = 10;
 
-const initBoard = new Board(BoardIds.Turtle);
+const board = new Board(BoardIds.Turtle);
+
+//@ts-ignore
+window.board = board;
 
 const calcXPos = (x: number, z: number) => x * (TILE_WIDTH / 2) + z * Z_OFFSET;
 const calcYPos = (y: number, z: number) => y * (TILE_HEIGHT / 2) - z * Z_OFFSET;
@@ -19,13 +22,38 @@ const calcYPos = (y: number, z: number) => y * (TILE_HEIGHT / 2) - z * Z_OFFSET;
 const calcXOffset = (width: number) => (STAGE_WIDTH - width) / 2;
 const calcYOffset = (height: number) => (STAGE_HEIGHT - height) / 2;
 
+const flashRed = (dObj: PIXI.DisplayObject) => {
+  const filter = new PIXI.filters.ColorMatrixFilter();
+  filter.matrix[0] = 255;
+  dObj.filters = [filter];
+};
+
 export const App = () => {
-  const [board, setBoard] = useState(initBoard);
+  const [tiles, setTiles] = useState(board.tiles);
   const [selectedTile, setSelectedTile] = useState<TileClass | undefined>();
 
-  const onClick = (tile: TileClass) => {
-    setSelectedTile(tile);
-    console.log("hello");
+  const onClick = (tile: TileClass, dObj: PIXI.DisplayObject) => {
+    if (tile.id === selectedTile?.id) {
+      //selected tile has been clicked, unselect it
+      setSelectedTile(undefined);
+    } else {
+      if (!board.tileCanBeSelected(tile)) {
+        // shake tile
+        flashRed(dObj);
+        console.log("tile not selectable");
+      } else if (selectedTile && tile.number === selectedTile.number && tile.suit === selectedTile.suit) {
+        // its a match, remove both tiles
+        board.deleteTile(tile);
+        board.deleteTile(selectedTile);
+        setTiles(board.tiles);
+        setSelectedTile(undefined);
+      } else if (selectedTile) {
+        // its not a match, shake the tile
+      } else {
+        // no tiles currently selected, select the tile
+        setSelectedTile(tile);
+      }
+    }
   };
 
   return (
@@ -35,13 +63,9 @@ export const App = () => {
           x={calcXOffset(board.board.tileWidth * TILE_WIDTH)}
           y={calcYOffset(board.board.tileHeight * TILE_HEIGHT)}
         >
-          {[...board.tiles]
-            .sort((t1, t2) => {
-              if (t1.z === undefined || t2.z === undefined) return 0;
-              return t1.z - t2.z;
-            })
+          {[...tiles]
+            .sort((t1, t2) => t1.z - t2.z)
             .map((tile) => {
-              if (tile.x === undefined || tile.y === undefined || tile.z === undefined) return <></>;
               return (
                 <Tile
                   key={tile.id}

@@ -33,14 +33,14 @@ type TileProps = {
   y: number;
   number: string;
   suit: string;
-  onClick: (tile: TileClass) => void;
+  onClick: (tile: TileClass, event: PIXI.DisplayObject) => void;
   fillColor?: number;
   tile: TileClass;
 };
 
 const Tile = ({ x, y, number, suit, onClick, fillColor = 0xffffff, tile }: TileProps) => {
   return (
-    <Container x={x} y={y} interactive={true} pointerdown={() => onClick(tile)}>
+    <Container x={x} y={y} interactive={true} pointerdown={(event) => onClick(tile, event.currentTarget)}>
       <Rect x={0} y={0} width={TILE_WIDTH} height={TILE_HEIGHT} fillColor={fillColor} lineColor={0x000000} />
       <Text text={number} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 3} style={{ fontSize: 16 }} />
       <Text text={suit} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 2} style={{ fontSize: 12 }} />

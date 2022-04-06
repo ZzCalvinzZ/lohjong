@@ -22,9 +22,9 @@ export enum Suit {
 }
 
 export default class Tile {
-  x?: number;
-  y?: number;
-  z?: number;
+  x: number;
+  y: number;
+  z: number;
   number: string;
   suit: string;
   static dotNumbers: DotNumber[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
@@ -37,6 +37,9 @@ export default class Tile {
   constructor(number: Number, suit: Suit) {
     this.number = number;
     this.suit = suit;
+    this.x = -10
+    this.y = -10
+    this.z = -10
   }
 
   place({ z, x, y }: { z: number; x: number; y: number }) {
@@ -46,10 +49,6 @@ export default class Tile {
   }
 
   get tileCells() {
-    if (this.x === undefined || this.y === undefined || this.z === undefined) {
-      throw new Error("Tiles need to be placed before you can get their cells");
-    }
-
     return [
       {
         z: this.z,
