@@ -50,9 +50,10 @@ export default class Board {
     const adjTiles = this.tileAdjGraph[tile.id] as Tile[];
 
     const tilesOnTop = adjTiles.filter((t: Tile) => t.z > tile.z);
-    const tilesOnSide = adjTiles.filter((t: Tile) => t.z === tile.z);
+    const tilesOnLeft = adjTiles.filter((t: Tile) => (t.z === tile.z) && t.x < tile.x);
+    const tilesOnRight = adjTiles.filter((t: Tile) => (t.z === tile.z) && t.x > tile.x);
 
-    return tilesOnSide.length >= 2 || tilesOnTop.length > 0 ? false : true;
+    return (tilesOnLeft.length && tilesOnRight.length) || tilesOnTop.length > 0 ? false : true;
   }
 
   placeTiles() {
