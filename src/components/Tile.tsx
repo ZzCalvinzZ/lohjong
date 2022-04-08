@@ -1,58 +1,69 @@
-import * as PIXI from "pixi.js";
-import { PixiComponent } from "@inlet/react-pixi";
-import { Container, Text } from "@inlet/react-pixi";
+import styled from "styled-components";
 import TileClass from "engine/tile";
 
 export const TILE_WIDTH = 50;
 export const TILE_HEIGHT = 75;
 
-type RectProps = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  lineColor: number;
-  fillColor: number;
-};
-
-const Rect = PixiComponent<RectProps, PIXI.Graphics>("Tile", {
-  create() {
-    return new PIXI.Graphics();
-  },
-  applyProps(ins: PIXI.Graphics, oldProps: RectProps, newProps: RectProps) {
-    ins.clear();
-    ins.lineStyle(2, newProps.lineColor);
-    ins.beginFill(newProps.fillColor);
-    ins.drawRect(newProps.x, newProps.y, newProps.width, newProps.height);
-    ins.endFill();
-  },
-});
+interface ButtonProps {
+  readonly x: number;
+  readonly y: number;
+  readonly selected: boolean;
+  readonly error: boolean;
+}
+const Button = styled.button<ButtonProps>`
+  width: ${TILE_WIDTH}px;
+  height: ${TILE_HEIGHT}px;
+  position: absolute;
+  left: ${(props) => props.x}px;
+  top: ${(props) => props.y}px;
+  background: ${(props) => (props.selected ? "#f5f4ba" : "#ffffff")};
+  border-style: solid;
+  outline: #c2c2c2;
+  overflow: hidden;
+  animation: ${(props) => props.error && "blinkingBackground 0.25s 2"};
+  &:hover {
+  }
+  &:focus {
+    background-color: ${(props) => !props.error && !props.selected && "#e3e3e3"};
+  }
+  &:active {
+    border-style: solid;
+    outline: #c2c2c2;
+  }
+  @keyframes blinkingBackground {
+    from {
+      background-color: #d14f4f;
+    }
+    to {
+      background-color: #ffffff;
+    }
+  }
+  // @keyframes disappear {
+  //   from {
+  //   }
+  //   to {
+  //     visibility: hidden;
+  //     opacity: 0;
+  //   }
+  // }
+`;
 
 type TileProps = {
   x: number;
   y: number;
   number: string;
   suit: string;
-  onClick: (tile: TileClass, event: PIXI.DisplayObject) => void;
-  fillColor?: number;
+  onClick: (tile: TileClass, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   tile: TileClass;
+  selected: boolean;
   error: boolean;
 };
 
-const Tile = ({ x, y, number, suit, onClick, fillColor = 0xffffff, tile, error }: TileProps) => {
+const Tile = ({ x, y, number, suit, onClick, tile, error, selected }: TileProps) => {
   return (
-    <Container x={x} y={y} interactive={true} pointerdown={(event) => onClick(tile, event.currentTarget)}>
-      <Rect
-        x={0}
-        y={0}
-        width={TILE_WIDTH}
-        height={TILE_HEIGHT}
-        fillColor={error ? 0xd14f4f : fillColor}
-        lineColor={0x000000}
-      />
-      <Text text={number} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 3} style={{ fontSize: 16 }} />
-      <Text text={suit} anchor={0.5} x={TILE_WIDTH / 2} y={TILE_HEIGHT / 2} style={{ fontSize: 12 }} />
-    </Container>
+    <Button x={x} y={y} error={error} selected={selected} onClick={(event) => onClick(tile, event)}>
+      {`${number}\n${suit}`}
+    </Button>
   );
 };
 
