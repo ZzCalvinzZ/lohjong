@@ -5,15 +5,10 @@ import TileClass from "engine/tile";
 import Board from "engine/board";
 import { BoardIds } from "boards/types";
 
-const Z_OFFSET = 10;
-
 const board = new Board(BoardIds.Turtle);
 
 //@ts-ignore
 window.board = board;
-
-const calcXPos = (x: number, z: number) => x * (TILE_WIDTH / 2) + z * Z_OFFSET;
-const calcYPos = (y: number, z: number) => y * (TILE_HEIGHT / 2) - z * Z_OFFSET;
 
 interface DivProps {
   readonly width: number;
@@ -73,15 +68,22 @@ export const App = () => {
   return (
     <Div width={board.board.tileWidth * TILE_WIDTH} height={board.board.tileHeight * TILE_HEIGHT}>
       {[...tiles]
-        .sort((t1, t2) => t1.z - t2.z)
+        .sort((t1, t2) => {
+          // complicated but lays the tiles in the correct order
+          if (t1.z < t2.z) {
+            return -1;
+          } else if (t1.y < t2.y && t1.x < t2.x) {
+            return 1;
+          } else if (t1.y < t2.y) {
+            return -1;
+          } else {
+            return 1;
+          }
+        })
         .map((tile) => {
           return (
             <Tile
               key={tile.id}
-              x={calcXPos(tile.x, tile.z)}
-              y={calcYPos(tile.y, tile.z)}
-              number={tile.number}
-              suit={tile.suit}
               selected={tile === selectedTile}
               onClick={onClick}
               tile={tile}
