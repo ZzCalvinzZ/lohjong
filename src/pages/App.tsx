@@ -34,9 +34,9 @@ export const App = () => {
     setSelectedTile(undefined);
     setErrorTiles([...errorTiles, tile]);
     setTimeout(() => {
-      // After 3 seconds set the show value to false
+      // After 0.5 seconds set the show value to false
       setErrorTiles(errorTiles.filter((t) => t.id !== tile.id));
-    }, 1000);
+    }, 500);
   };
 
   const onClick = (tile: TileClass, event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

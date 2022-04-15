@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import TileClass from "engine/tile";
-import tileImage from "./tile_2.png";
+import tileImage from "./tile_3.png";
 
 export const TILE_WIDTH = 50;
 export const TILE_HEIGHT = 75;
@@ -20,14 +20,13 @@ const Button = styled.button<ButtonProps>`
   position: absolute;
   left: ${(props) => props.x}px;
   top: ${(props) => props.y}px;
-  // background: ${(props) => (props.selected ? "#f5f4ba" : "#ffffff")};
   background: url("${tileImage}") no-repeat top left;
   background-size: ${TILE_WIDTH}px ${TILE_HEIGHT}px;
   background-position: center;
   border: none;
   overflow: hidden;
-  filter: ${(props) => (props.selected ? "brightness(1.1)" : undefined)};
-  animation: ${(props) => props.error && "blinkingBackground 0.25s 2"};
+  filter: ${(props) => (props.selected ? "drop-shadow(0px 0px 6px #8a62cf)" : undefined)};
+  animation: ${(props) => props.error && "shake 0.2s cubic-bezier(.36,.07,.19,.97) both"};
   // &:hover {
   // }
   // &:focus {
@@ -49,6 +48,14 @@ const Button = styled.button<ButtonProps>`
   //     opacity: 0;
   //   }
   // }
+
+  @keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(0eg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
 `;
 
 type TileProps = {
