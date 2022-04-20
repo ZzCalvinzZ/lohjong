@@ -1,8 +1,3 @@
-type TilePropTypes = {
-  number: string;
-  suit: string;
-};
-
 type DotNumber = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"; // 4 tiles per dot (36)
 type BamNumber = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"; // 4 tiles per bam (36)
 type CrakNumber = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"; // 4 tiles per crak (36)
@@ -25,8 +20,8 @@ export default class Tile {
   x: number;
   y: number;
   z: number;
-  number: string;
-  suit: string;
+  number: Number;
+  suit: Suit;
   static dotNumbers: DotNumber[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   static bamNumbers: BamNumber[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   static crakNumbers: CrakNumber[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
